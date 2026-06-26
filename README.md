@@ -9,7 +9,20 @@ AI-powered resume tailoring and job outreach generator. Upload your resume, past
 ### ✦ Tailor your resume to any job
 Upload your resume (PDF or DOCX), paste the job description, set your personal rules once — the AI rewrites your bullets, adds relevant tools, and fits everything to one page.
 
-![Resume Editor](docs/resume-editor.png)
+
+#### Set your own Rules
+![Resume rules](docs/Rules.png)
+
+#### Research Agent to search for missing pieces in your 
+![Research Agent](docs/resume-editor.png)
+
+
+#### Update Resume & Regenerate according to your convienience
+![Updated Resume to edit on UI](docs/Resume-edited.png)
+![Updated formated Resume](docs/Resume-Formatted.png)
+
+#### Check what changed! 
+![What Changed?](docs/Diff.png)
 
 ### ✦ Generate outreach in one click
 Produces a LinkedIn connection note (under 300 chars) and a cold email — both filled from your actual resume and the JD. Regenerate each independently without touching the other.

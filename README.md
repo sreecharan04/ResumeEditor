@@ -14,7 +14,7 @@ Upload your resume (PDF or DOCX), paste the job description, set your personal r
 ![Resume rules](docs/Rules.png)
 
 #### Research Agent to search for missing pieces in your 
-![Research Agent](docs/resume-editor.png)
+![Research Agent](docs/Research.png)
 
 
 #### Update Resume & Regenerate according to your convienience

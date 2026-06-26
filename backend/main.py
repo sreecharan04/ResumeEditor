@@ -36,7 +36,7 @@ app.add_middleware(
 PREFS_FILE = pathlib.Path(__file__).parent / "user_preferences.json"
 
 DEFAULT_MODELS = {
-    "gemini": "gemini-2.0-flash",
+    "gemini": "gemini-2.5-flash",
     "openai": "gpt-4o",
     "anthropic": "claude-sonnet-4-6",
 }

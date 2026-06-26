@@ -68,7 +68,7 @@ function ContactSection({
   onChange: (r: ResumeData) => void;
 }) {
   const set = (field: string, value: string) =>
-    onChange({ ...resume, contact: { ...resume.contact, [field]: value } });
+    onChange({ ...resume, contact: { ...(resume.contact ?? {}), [field]: value } });
 
   const fields: { key: keyof typeof resume.contact; label: string; placeholder: string }[] = [
     { key: "email", label: "Email", placeholder: "email@example.com" },
@@ -86,7 +86,7 @@ function ContactSection({
           <span className="text-xs font-medium text-gray-400 w-16 shrink-0">{label}</span>
           <div className="flex-1 min-w-0">
             <AutoTextarea
-              value={(resume.contact[key] as string) || ""}
+              value={((resume.contact ?? {})[key] as string) || ""}
               onChange={(v) => set(key, v)}
               placeholder={placeholder}
             />

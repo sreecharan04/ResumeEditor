@@ -39,7 +39,7 @@ DEFAULT_MODELS = {
     "gemini": "gemini-2.5-flash",
     "openai": "gpt-4o",
     "anthropic": "claude-sonnet-4-6",
-    "cerebras": "llama-3.3-70b",
+    "cerebras": "gpt-oss-120b",
 }
 
 ENV_KEY_VARS = {

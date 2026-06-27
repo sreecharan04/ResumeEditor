@@ -13,7 +13,7 @@ const MODELS: Record<string, string[]> = {
   gemini: ["gemini-2.5-flash", "gemini-2.5-pro", "gemini-2.0-flash", "gemini-1.5-flash"],
   openai: ["gpt-4o", "gpt-4o-mini", "gpt-4-turbo", "o1-mini"],
   anthropic: ["claude-opus-4-8", "claude-sonnet-4-6", "claude-haiku-4-5-20251001"],
-  cerebras: ["llama-3.3-70b", "llama3.1-70b", "llama3.1-8b"],
+  cerebras: ["gpt-oss-120b", "zai-glm-4.7"],
 };
 
 type Provider = "gemini" | "openai" | "anthropic" | "cerebras";
@@ -134,7 +134,7 @@ export default function SettingsPanel({
       gemini: "gemini-2.5-flash",
       openai: "gpt-4o",
       anthropic: "claude-sonnet-4-6",
-      cerebras: "llama-3.3-70b",
+      cerebras: "gpt-oss-120b",
     };
     onActiveModelChange(defaults[p] ?? "");
   };

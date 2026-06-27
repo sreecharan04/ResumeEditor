@@ -84,4 +84,5 @@ export interface Preferences {
   gemini_key: string;
   openai_key: string;
   anthropic_key: string;
+  cerebras_key: string;
 }

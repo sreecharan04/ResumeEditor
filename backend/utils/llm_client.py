@@ -9,7 +9,7 @@ from dataclasses import dataclass
 
 @dataclass
 class LLMConfig:
-    provider: str   # "gemini" | "openai" | "anthropic"
+    provider: str   # "gemini" | "openai" | "anthropic" | "cerebras"
     model: str
     api_key: str
 
@@ -32,6 +32,8 @@ async def generate(
         return await _openai(config, prompt, system_prompt, image_bytes, image_media_type)
     elif config.provider == "anthropic":
         return await _anthropic(config, prompt, system_prompt, image_bytes, image_media_type)
+    elif config.provider == "cerebras":
+        return await _cerebras(config, prompt, system_prompt)
     else:
         raise ValueError(f"Unknown provider: {config.provider!r}")
 
@@ -96,6 +98,23 @@ async def _openai(
         content = prompt  # type: ignore[assignment]
 
     messages.append({"role": "user", "content": content})
+    response = await client.chat.completions.create(model=config.model, messages=messages)
+    return response.choices[0].message.content or ""
+
+
+# ── Cerebras ─────────────────────────────────────────────────────────────────
+
+async def _cerebras(config: LLMConfig, prompt: str, system_prompt: str) -> str:
+    try:
+        from openai import AsyncOpenAI
+    except ImportError:
+        raise RuntimeError("openai not installed. Run: pip install openai")
+
+    client = AsyncOpenAI(api_key=config.api_key, base_url="https://api.cerebras.ai/v1")
+    messages = []
+    if system_prompt:
+        messages.append({"role": "system", "content": system_prompt})
+    messages.append({"role": "user", "content": prompt})
     response = await client.chat.completions.create(model=config.model, messages=messages)
     return response.choices[0].message.content or ""
 

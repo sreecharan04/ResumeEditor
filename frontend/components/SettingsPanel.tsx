@@ -6,15 +6,17 @@ const PROVIDERS = [
   { id: "gemini", label: "Google Gemini", color: "text-blue-600" },
   { id: "openai", label: "OpenAI", color: "text-green-600" },
   { id: "anthropic", label: "Anthropic", color: "text-orange-600" },
+  { id: "cerebras", label: "Cerebras", color: "text-purple-600" },
 ] as const;
 
 const MODELS: Record<string, string[]> = {
   gemini: ["gemini-2.5-flash", "gemini-2.5-pro", "gemini-2.0-flash", "gemini-1.5-flash"],
   openai: ["gpt-4o", "gpt-4o-mini", "gpt-4-turbo", "o1-mini"],
   anthropic: ["claude-opus-4-8", "claude-sonnet-4-6", "claude-haiku-4-5-20251001"],
+  cerebras: ["llama-3.3-70b", "llama3.1-70b", "llama3.1-8b"],
 };
 
-type Provider = "gemini" | "openai" | "anthropic";
+type Provider = "gemini" | "openai" | "anthropic" | "cerebras";
 
 interface Props {
   activeProvider: string;
@@ -22,22 +24,22 @@ interface Props {
   geminiKey: string;
   openaiKey: string;
   anthropicKey: string;
+  cerebrasKey: string;
   onActiveProviderChange: (v: string) => void;
   onActiveModelChange: (v: string) => void;
   onGeminiKeyChange: (v: string) => void;
   onOpenaiKeyChange: (v: string) => void;
   onAnthropicKeyChange: (v: string) => void;
+  onCerebrasKeyChange: (v: string) => void;
 }
 
 function KeyInput({
   label,
-  provider,
   value,
   onChange,
   isActive,
 }: {
   label: string;
-  provider: string;
   value: string;
   onChange: (v: string) => void;
   isActive: boolean;
@@ -113,11 +115,13 @@ export default function SettingsPanel({
   geminiKey,
   openaiKey,
   anthropicKey,
+  cerebrasKey,
   onActiveProviderChange,
   onActiveModelChange,
   onGeminiKeyChange,
   onOpenaiKeyChange,
   onAnthropicKeyChange,
+  onCerebrasKeyChange,
 }: Props) {
   const provider = activeProvider as Provider;
   const modelOptions = MODELS[provider] ?? [];
@@ -130,6 +134,7 @@ export default function SettingsPanel({
       gemini: "gemini-2.5-flash",
       openai: "gpt-4o",
       anthropic: "claude-sonnet-4-6",
+      cerebras: "llama-3.3-70b",
     };
     onActiveModelChange(defaults[p] ?? "");
   };
@@ -138,16 +143,19 @@ export default function SettingsPanel({
     gemini: onGeminiKeyChange,
     openai: onOpenaiKeyChange,
     anthropic: onAnthropicKeyChange,
+    cerebras: onCerebrasKeyChange,
   };
   const keyValueMap: Record<string, string> = {
     gemini: geminiKey,
     openai: openaiKey,
     anthropic: anthropicKey,
+    cerebras: cerebrasKey,
   };
   const keyLabelMap: Record<string, string> = {
     gemini: "Google Gemini",
     openai: "OpenAI",
     anthropic: "Anthropic",
+    cerebras: "Cerebras",
   };
 
   return (
@@ -160,7 +168,7 @@ export default function SettingsPanel({
           <p className="text-xs text-gray-400 mt-0.5">All resume and outreach generation will use this provider</p>
         </div>
 
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-4 gap-2">
           {PROVIDERS.map((p) => (
             <button
               key={p.id}
@@ -172,7 +180,7 @@ export default function SettingsPanel({
               }`}
             >
               <span className={`text-xs font-semibold ${activeProvider === p.id ? "text-indigo-600" : "text-gray-400"}`}>
-                {p.id === "gemini" ? "Gemini" : p.id === "openai" ? "OpenAI" : "Anthropic"}
+                {p.id === "gemini" ? "Gemini" : p.id === "openai" ? "OpenAI" : p.id === "anthropic" ? "Anthropic" : "Cerebras"}
               </span>
               <span className="text-[11px] text-gray-400 font-normal">{p.label.split(" ")[0]}</span>
             </button>
@@ -220,11 +228,10 @@ export default function SettingsPanel({
           </p>
         </div>
 
-        {(["gemini", "openai", "anthropic"] as Provider[]).map((p) => (
+        {(["gemini", "openai", "anthropic", "cerebras"] as Provider[]).map((p) => (
           <KeyInput
             key={p}
             label={keyLabelMap[p]}
-            provider={p}
             value={keyValueMap[p]}
             onChange={keyChangeMap[p]}
             isActive={activeProvider === p}

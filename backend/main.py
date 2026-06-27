@@ -39,12 +39,14 @@ DEFAULT_MODELS = {
     "gemini": "gemini-2.5-flash",
     "openai": "gpt-4o",
     "anthropic": "claude-sonnet-4-6",
+    "cerebras": "llama-3.3-70b",
 }
 
 ENV_KEY_VARS = {
     "gemini": "GOOGLE_API_KEY",
     "openai": "OPENAI_API_KEY",
     "anthropic": "ANTHROPIC_API_KEY",
+    "cerebras": "CEREBRAS_API_KEY",
 }
 
 
@@ -77,6 +79,7 @@ class Preferences(BaseModel):
     gemini_key: str = ""
     openai_key: str = ""
     anthropic_key: str = ""
+    cerebras_key: str = ""
 
 
 @app.get("/api/preferences", response_model=Preferences)

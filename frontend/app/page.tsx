@@ -51,6 +51,7 @@ export default function Home() {
   const [geminiKey, setGeminiKey] = useState("");
   const [openaiKey, setOpenaiKey] = useState("");
   const [anthropicKey, setAnthropicKey] = useState("");
+  const [cerebrasKey, setCerebrasKey] = useState("");
 
   // Resume tab state
   const [isLoading, setIsLoading] = useState(false);
@@ -76,6 +77,7 @@ export default function Home() {
     gemini_key: "",
     openai_key: "",
     anthropic_key: "",
+    cerebras_key: "",
   });
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -91,6 +93,7 @@ export default function Home() {
     if (p.gemini_key !== undefined) setGeminiKey(p.gemini_key);
     if (p.openai_key !== undefined) setOpenaiKey(p.openai_key);
     if (p.anthropic_key !== undefined) setAnthropicKey(p.anthropic_key);
+    if (p.cerebras_key !== undefined) setCerebrasKey(p.cerebras_key);
     prefsRef.current = {
       personal_rules: p.personal_rules ?? prefsRef.current.personal_rules,
       linkedin_template: p.linkedin_template || prefsRef.current.linkedin_template,
@@ -101,6 +104,7 @@ export default function Home() {
       gemini_key: p.gemini_key ?? prefsRef.current.gemini_key,
       openai_key: p.openai_key ?? prefsRef.current.openai_key,
       anthropic_key: p.anthropic_key ?? prefsRef.current.anthropic_key,
+      cerebras_key: p.cerebras_key ?? prefsRef.current.cerebras_key,
     };
   };
 
@@ -175,6 +179,11 @@ export default function Home() {
     prefsRef.current = { ...prefsRef.current, anthropic_key: v };
     scheduleSave();
   };
+  const handleCerebrasKeyChange = (v: string) => {
+    setCerebrasKey(v);
+    prefsRef.current = { ...prefsRef.current, cerebras_key: v };
+    scheduleSave();
+  };
 
   // Restore JD + file from sessionStorage on page reload
   useEffect(() => {
@@ -221,6 +230,7 @@ export default function Home() {
   const handleJdImageExtract = async (file: File): Promise<void> => {
     const apiKey = activeProvider === "gemini" ? geminiKey
       : activeProvider === "openai" ? openaiKey
+      : activeProvider === "cerebras" ? cerebrasKey
       : anthropicKey;
     const result = await extractTextFromImage(file, activeProvider, activeModel, apiKey);
     handleJdChange(result.text);
@@ -245,6 +255,7 @@ export default function Home() {
     setLoadingMsg(LOADING_MESSAGES[0]);
     const apiKey = activeProvider === "gemini" ? geminiKey
       : activeProvider === "openai" ? openaiKey
+      : activeProvider === "cerebras" ? cerebrasKey
       : anthropicKey;
     try {
       const result = await editResume(resumeFile, jobDescription, personalRules, activeProvider, activeModel, apiKey);
@@ -485,7 +496,7 @@ export default function Home() {
                 personalNotes={outreachNotes}
                 activeProvider={activeProvider}
                 activeModel={activeModel}
-                apiKey={activeProvider === "gemini" ? geminiKey : activeProvider === "openai" ? openaiKey : anthropicKey}
+                apiKey={activeProvider === "gemini" ? geminiKey : activeProvider === "openai" ? openaiKey : activeProvider === "cerebras" ? cerebrasKey : anthropicKey}
                 onLinkedinTemplateChange={handleLinkedinTemplateChange}
                 onEmailTemplateChange={handleEmailTemplateChange}
                 onPersonalNotesChange={handleOutreachNotesChange}
@@ -501,11 +512,13 @@ export default function Home() {
                 geminiKey={geminiKey}
                 openaiKey={openaiKey}
                 anthropicKey={anthropicKey}
+                cerebrasKey={cerebrasKey}
                 onActiveProviderChange={handleActiveProviderChange}
                 onActiveModelChange={handleActiveModelChange}
                 onGeminiKeyChange={handleGeminiKeyChange}
                 onOpenaiKeyChange={handleOpenaiKeyChange}
                 onAnthropicKeyChange={handleAnthropicKeyChange}
+                onCerebrasKeyChange={handleCerebrasKeyChange}
               />
             </div>
           </div>
